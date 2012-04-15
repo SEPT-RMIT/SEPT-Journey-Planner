@@ -1,0 +1,106 @@
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAfRUZunjGFfD3t7VIik4yydnE066MO_6k&sensor=false">
+</script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+<script type="text/javascript" charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+<script type="text/javascript" src="/Scripts/jquery-1.6.2.js"></script>
+<link type="text/css" href="/Content/Alterations.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "It's your Journey";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+            </p>
+        </div>
+    </section>
+}
+<div class="code">
+    <p>
+        Requirements
+        <ul>
+            <li>Getting the data</li>
+            <li>Storing it in some sort of structure</li>
+            <li>Demonstrating that this structure can support the types of things you would want
+                a user to do with it.</li>
+        </ul>
+    </p>
+</div>
+<h3>
+    View our Data:</h3>
+<ol class="round">
+    <li class="one">
+        <h5>
+            Select a Line</h5>
+        <div class="lines">
+            <select id="train-list" class="transport-list">
+                <option>-- Select a Line --</option>
+                @foreach (var item in @ViewBag.lines)
+                { 
+                    <option value="@item.id">@item.name</option>
+                }
+            </select>
+        </div>
+    </li>
+    <li class="two">
+        <h5>
+            Select a Station</h5>
+        <div class="stations">
+            <br />
+            @*<div id="stations-loading">
+                <img src="/Images/ajax-throbber.gif" alt="loading" />
+                Collecting data...
+            </div>*@
+        </div>
+    </li>
+    <li class="three">
+        <h5>
+            Select a Time</h5>
+        <div class="times">
+            <br />
+            @*<div id="times-loading">
+                <img src="/Images/ajax-throbber.gif" alt="loading" />
+                Collecting data...
+            </div>*@
+        </div>
+    </li>
+</ol>
+<div id="map_canvas" style="width: 857px; height: 400px; float: left; border: 1px solid #ccc;
+    margin-top: 4px">
+    &nbsp; @*<div id="maps-loading">
+        <img src="/Images/ajax-throbber.gif" alt="loading" />
+        Collecting data...
+    </div>*@
+</div>
+<section class="features">
+    <section class="feature">
+        <h3>
+            Yarra Trams</h3>
+        <p>
+            <script src="../../Scripts/Twitter/yarratrams-feed.js" type="text/javascript"></script>
+            <img src="~/Images/yarra_trams.png" style="width: 250px;" alt="Yarra Trams's Logo">
+        </p>
+    </section>
+    <section class="feature">
+        <h3>
+            Metlink</h3>
+        <p>
+            <script type="text/javascript" src="../../Scripts/Twitter/metlink-feed.js"></script>
+            <img src="~/Images/metlink.png" style="width: 244px;" alt="MetLink's Logo">
+        </p>
+    </section>
+    <section class="feature">
+        <h3>
+            Metro Trains</h3>
+        <p>
+            <script src="/Scripts/Twitter/metro-feed.js" type="text/javascript"></script>
+        </p>
+        <img src="~/Images/metro.png" style="width: 129px; padding-left: 79px;" alt="Metro's Logo" />
+    </section>
+</section>
+<script src="/Scripts/TimeTable/Index/timetable-home.js" type="text/javascript"></script>
+<script src="/Scripts/Google/station-map.js" type="text/javascript"></script>

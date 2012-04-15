@@ -1,0 +1,49 @@
+﻿<div class="two-round">
+    <ol class="round">
+        <li class="two">
+            <h5>
+                Select a Station</h5>
+            <select class="station-list" style="margin-top: 9px; margin-left: 0px; width: 140px;
+                height: 27px;">
+                <option>-- Select a station --</option>
+                @foreach (var item in @ViewBag.Stations)
+                { 
+                    <option>@item.Name</option>
+                }
+            </select>
+            <br />
+            <div class="loading-sup">
+                <img src="../../Images/ajax-throbber.gif" /><br />
+                Collecting data...
+            </div>
+        </li>
+    </ol>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.loading-sup').hide();
+    });
+    $('.station-list').change(function () {
+        $('.loading-sup').show();
+        $.ajax({
+            url: "/Home/ScrapeAgain",
+            type: "GET",
+            datatype: "json",
+            data: { Station: $(".station-list").val() },
+            success: function (data) {
+                if (data.Success === false)
+                    alert(data.Message);
+                else {
+                    $('.loading-sup').hide();
+                    $('.two-round').html(data);
+                }
+            },
+            failure: function (data) {
+                alert("Something went wrong. Please try again");
+            },
+            error: function (data) {
+                alert("There was a connection error. Please check your connection and try again");
+            }
+        });
+    });
+</script>

@@ -1,0 +1,48 @@
+﻿
+<ol class="round">
+    <li class="three">
+        <h5>
+            Select a Time</h5>
+        <select class="time-list" style="margin-top: 9px; margin-left: 0px; width: 140px;
+            height: 27px;">
+            <option>-- Select a station --</option>
+            @foreach (KeyValuePair<int, string> item in @ViewBag.Times)
+            { 
+                <option>@item.Value</option>
+            }
+        </select>
+    </li>
+</ol>
+<div id="map_canvas" style="width: 857px; height: 400px; float: left; border: 1px solid #ccc;
+    margin-top: 4px">
+    &nbsp;
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.one').css("color: #123456");
+        initialize(new google.maps.LatLng(@ViewBag.Lat, @ViewBag.Long));
+    });
+
+    $('.time-list').change(function () { $('.one').css("color: #123456"); });
+
+    function initialize(latlng) {
+
+        var myOptions = {
+            zoom: 14,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+        marker = new google.maps.Marker({
+            map: map,
+            draggable: false,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
+            position: latlng
+        });
+    }
+
+</script>

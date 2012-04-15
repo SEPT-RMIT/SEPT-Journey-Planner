@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "Scraper";
+}
+<style type="text/css">
+    .code
+    {
+        position: relative;
+        background: #333;
+        color: white;
+        font-family: Monaco, Courier, MonoSpace;
+        line-height: 1.8;
+        -moz-border-radius: 8px;
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+        font-size: 12px;
+        padding: 10px;
+        margin: 0 0 25px 0;
+        overflow: auto;
+    }
+</style>
+<h2>
+    Scraper</h2>
+<article>
+    <p>
+        We sourced our train timetable data by scraping timetables from <a href="http://ptv.vic.gov.au/">
+            Public Transport Victoria</a>. We used the library <a href="http://htmlagilitypack.codeplex.com/">
+                HTMLAgility </a>to help parse the DOM.
+    </p>
+    <p>
+        HTMLAgility exposed easy to use methods that enabled us to grab the data from specific
+        div elements
+    </p>
+    <div class="code">
+        <p>
+            var stations = htmlDocument.DocumentNode.SelectNodes("//div[id='ttMargin']");
+        </p>
+        <p>
+            var times = htmlDocument.DocumentNode.SelectNodes("//div[id='ttBody']");
+        </p>
+        <p>
+            var line = htmlDocument.DocumentNode.SelectNodes("//div[id='ttHeadline']");
+        </p>
+    </div>
+    <p>
+        From here we were able to loop through the div's child nodes to extract the data.
+    </p>
+    <div class="code">
+        <p>
+            for (int i = 0; i < stations.First().ChildNodes.Count; i++)<br />
+            {
+            <br />
+            ...<br />
+            }
+        </p>
+    </div>
+    <p>
+        Using the following objects...
+    </p>
+    <div class="code">
+        <p>
+            public class TimeTable<br />
+            {<br />
+            public string Line { get; set; }<br />
+            public List<"station"> Stations { get; set; }<br />
+        public GoogleGeoCodeResponse Geo { get; set; }<br />
+        public TimeTable() { this.Stations = new List<"Station">(); }<br />
+    }<br />
+        public class Station<br />
+    {<br />
+        public string Name { get; set; }<br />
+        public Dictionary<"int", "string"> Times { get; set; }<br />
+        public GoogleGeoCodeResponse Geo { get; set; }<br />
+        public Station() { this.Times = new Dictionary<"int", "string">(); } <br />
+        }<br />
+        </p>
+    </div>
+    <p>
+        ... we were able to create instances as we scraped the data and insert it directly
+        to our database.
+    </p>
+    <p>
+        The scraping code is available in TimeTableModels.cs
+    </p>
+</article>

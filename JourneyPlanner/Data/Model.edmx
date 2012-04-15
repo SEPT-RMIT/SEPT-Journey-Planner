@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TimeTableModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="TimeTableModelStoreContainer">
+          <EntitySet Name="addresses" EntityType="TimeTableModel.Store.addresses" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="lines" EntityType="TimeTableModel.Store.lines" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="stations" EntityType="TimeTableModel.Store.stations" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="times" EntityType="TimeTableModel.Store.times" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_addresses_stations" Association="TimeTableModel.Store.FK_addresses_stations">
+            <End Role="stations" EntitySet="stations" />
+            <End Role="addresses" EntitySet="addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_stations_lines" Association="TimeTableModel.Store.FK_stations_lines">
+            <End Role="lines" EntitySet="lines" />
+            <End Role="stations" EntitySet="stations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_times_stations" Association="TimeTableModel.Store.FK_times_stations">
+            <End Role="stations" EntitySet="stations" />
+            <End Role="times" EntitySet="times" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="addresses">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="station_id" Type="int" Nullable="false" />
+          <Property Name="address" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="longitude" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="latitude" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="lines">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="stations">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="line_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="times">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="station_id" Type="int" Nullable="false" />
+          <Property Name="time" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="number" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_addresses_stations">
+          <End Role="stations" Type="TimeTableModel.Store.stations" Multiplicity="1" />
+          <End Role="addresses" Type="TimeTableModel.Store.addresses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stations">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="addresses">
+              <PropertyRef Name="station_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_stations_lines">
+          <End Role="lines" Type="TimeTableModel.Store.lines" Multiplicity="1" />
+          <End Role="stations" Type="TimeTableModel.Store.stations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lines">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="stations">
+              <PropertyRef Name="line_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_times_stations">
+          <End Role="stations" Type="TimeTableModel.Store.stations" Multiplicity="1" />
+          <End Role="times" Type="TimeTableModel.Store.times" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stations">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="times">
+              <PropertyRef Name="station_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TimeTableModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="TimeTableEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="addresses" EntityType="TimeTableModel.address" />
+          <EntitySet Name="lines" EntityType="TimeTableModel.line" />
+          <EntitySet Name="stations" EntityType="TimeTableModel.station" />
+          <EntitySet Name="times" EntityType="TimeTableModel.time" />
+          <AssociationSet Name="FK_addresses_stations" Association="TimeTableModel.FK_addresses_stations">
+            <End Role="stations" EntitySet="stations" />
+            <End Role="addresses" EntitySet="addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_stations_lines" Association="TimeTableModel.FK_stations_lines">
+            <End Role="lines" EntitySet="lines" />
+            <End Role="stations" EntitySet="stations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_times_stations" Association="TimeTableModel.FK_times_stations">
+            <End Role="stations" EntitySet="stations" />
+            <End Role="times" EntitySet="times" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="address">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="station_id" Type="Int32" Nullable="false" />
+          <Property Name="address1" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="longitude" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="latitude" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="station" Relationship="TimeTableModel.FK_addresses_stations" FromRole="addresses" ToRole="stations" />
+        </EntityType>
+        <EntityType Name="line">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="stations" Relationship="TimeTableModel.FK_stations_lines" FromRole="lines" ToRole="stations" />
+        </EntityType>
+        <EntityType Name="station">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="line_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="addresses" Relationship="TimeTableModel.FK_addresses_stations" FromRole="stations" ToRole="addresses" />
+          <NavigationProperty Name="line" Relationship="TimeTableModel.FK_stations_lines" FromRole="stations" ToRole="lines" />
+          <NavigationProperty Name="times" Relationship="TimeTableModel.FK_times_stations" FromRole="stations" ToRole="times" />
+        </EntityType>
+        <EntityType Name="time">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="station_id" Type="Int32" Nullable="false" />
+          <Property Name="time1" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="number" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="station" Relationship="TimeTableModel.FK_times_stations" FromRole="times" ToRole="stations" />
+        </EntityType>
+        <Association Name="FK_addresses_stations">
+          <End Role="stations" Type="TimeTableModel.station" Multiplicity="1" />
+          <End Role="addresses" Type="TimeTableModel.address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stations">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="addresses">
+              <PropertyRef Name="station_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_stations_lines">
+          <End Role="lines" Type="TimeTableModel.line" Multiplicity="1" />
+          <End Role="stations" Type="TimeTableModel.station" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lines">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="stations">
+              <PropertyRef Name="line_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_times_stations">
+          <End Role="stations" Type="TimeTableModel.station" Multiplicity="1" />
+          <End Role="times" Type="TimeTableModel.time" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stations">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="times">
+              <PropertyRef Name="station_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TimeTableModelStoreContainer" CdmEntityContainer="TimeTableEntities">
+          <EntitySetMapping Name="addresses"><EntityTypeMapping TypeName="TimeTableModel.address"><MappingFragment StoreEntitySet="addresses">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="station_id" ColumnName="station_id" />
+            <ScalarProperty Name="address1" ColumnName="address" />
+            <ScalarProperty Name="longitude" ColumnName="longitude" />
+            <ScalarProperty Name="latitude" ColumnName="latitude" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="lines"><EntityTypeMapping TypeName="TimeTableModel.line"><MappingFragment StoreEntitySet="lines">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="name" ColumnName="name" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="stations"><EntityTypeMapping TypeName="TimeTableModel.station"><MappingFragment StoreEntitySet="stations">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="line_id" ColumnName="line_id" />
+            <ScalarProperty Name="name" ColumnName="name" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="times"><EntityTypeMapping TypeName="TimeTableModel.time"><MappingFragment StoreEntitySet="times">
+            <ScalarProperty Name="id" ColumnName="id" />
+            <ScalarProperty Name="station_id" ColumnName="station_id" />
+            <ScalarProperty Name="time1" ColumnName="time" />
+            <ScalarProperty Name="number" ColumnName="number" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model">
+        <EntityTypeShape EntityType="TimeTableModel.address" Width="1.5" PointX="5.25" PointY="1.125" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="TimeTableModel.line" Width="1.5" PointX="0.75" PointY="2.75" Height="1.5956835937499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="TimeTableModel.station" Width="1.5" PointX="3" PointY="2.375" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="TimeTableModel.time" Width="1.5" PointX="5.25" PointY="4" Height="1.9802864583333335" IsExpanded="true" />
+        <AssociationConnector Association="TimeTableModel.FK_addresses_stations" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="2.8362939453125" />
+          <ConnectorPoint PointX="5.25" PointY="2.8362939453125" />
+        </AssociationConnector>
+        <AssociationConnector Association="TimeTableModel.FK_stations_lines" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="3.547841796875" />
+          <ConnectorPoint PointX="3" PointY="3.547841796875" />
+        </AssociationConnector>
+        <AssociationConnector Association="TimeTableModel.FK_times_stations" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="4.2737939453125" />
+          <ConnectorPoint PointX="5.25" PointY="4.2737939453125" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

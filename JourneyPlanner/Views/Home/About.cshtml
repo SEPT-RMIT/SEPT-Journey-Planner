@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+<style type="text/css">
+    .code
+    {
+        position: relative;
+        background: #333;
+        color: white;
+        font-family: Monaco, Courier, MonoSpace;
+        line-height: 1.8;
+        -moz-border-radius: 8px;
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+        font-size: 12px;
+        padding: 10px;
+        margin: 0 0 25px 0;
+        overflow: auto;
+    }
+</style>
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>SEPT: Journey Planner</h2>
+</hgroup>
+<article>
+    <p>
+        Our group decided to approach this assignment by building a web application in ASP.NET
+        MVC4 and C#.
+        <br />
+        <br />
+        The features that the requirements specified seemed to naturally suit a web application.
+        For example, using the Google Maps API would satisfy the GPS and distance requirements.
+        <br />
+        <br />
+        Furthermore, a web application has the benefits of cross-platform accessibility
+        (including mobile) which our group felt would be very important to the users of
+        this application.
+    </p>
+    <h3>
+        Data</h3>
+    <p>
+        All the data that is so far available has been sourced from <a href="http://ptv.vic.gov.au/">
+            Public Transport Victoria</a>. You can read more about our scraping process
+        @Html.ActionLink("here", "Scraper", "Scrape"). At the moment we have only sourced
+        train timetables (city-bound) as per the assignment 3 requirements.
+    </p>
+    <p>
+        The most obvious and practical choice for storing our data was a database (MSSQL
+        Server 2008). A database is efficient and reliable and gives our group, as developers,
+        more flexibility in handling our data.
+    </p>
+    <p>
+        This is an overview of the initial schema we designed to hold the train timetable.
+        <br />
+        <img src="/Images/db-schema.png" style="width: 687px;" alt="schema">
+        <br />
+        We expect that as we begin to collect more data from different transport modes,
+        our database schema will change.
+    </p>
+    <h3>
+        Presentation</h3>
+    <p>
+        At the moment, our presentation is optimised to purely display the train timetable
+        data we have collected. That is, we only expose particular values and don't allow
+        user input. This is a deliberate decision for Assignment 3 and we expect that we
+        will implement alternative presentations as we expose more functionality to the
+        user over the course of the semester.
+    </p>
+</article>
+@*<aside>
+    <h3>
+        Aside Title</h3>
+    <p>
+        Fusce facilisis ullamcorper consequat. Vestibulum non sapien lectus. Nam mi augue,
+        posuere at tempus vel, dignissim vitae nulla.
+    </p>
+    <ul>
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+    </ul>
+</aside>*@

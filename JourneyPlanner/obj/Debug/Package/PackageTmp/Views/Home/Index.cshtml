@@ -1,0 +1,275 @@
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAfRUZunjGFfD3t7VIik4yydnE066MO_6k&sensor=false">
+</script>
+<script type="text/javascript" src="/Scripts/jquery-1.6.2.js"></script>
+@{
+    ViewBag.Title = "It's your Journey";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+            </p>
+        </div>
+    </section>
+}
+<style type="text/css">
+    .code
+    {
+        position: relative;
+        background: #333;
+        color: white;
+        font-family: Monaco, Courier, MonoSpace;
+        line-height: 1.8;
+        -moz-border-radius: 8px;
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+        font-size: 12px;
+        padding: 10px;
+        margin: 0 0 25px 0;
+        overflow: auto;
+    }
+</style>
+<div class="code">
+    <p>
+        Requirements
+        <ul>
+            <li>Getting the data</li>
+            <li>Storing it in some sort of structure</li>
+            <li>Demonstrating that this structure can support the types of things you would want
+                a user to do with it.</li>
+        </ul>
+    </p>
+</div>
+<h3>
+    View our Data:</h3>
+<ol class="round">
+    <li class="one">
+        <h5>
+            Select a Line</h5>
+        <div class="lines">
+            <select class="train-line" style="margin-top: 9px; margin-left: 0px; width: 140px;
+                height: 27px;">
+                <option>-- Select a Line --</option>
+                @foreach (var item in @ViewBag.lines)
+                { 
+                    <option value="@item.id">@item.name</option>
+                }
+            </select>
+        </div>
+    </li>
+    <li class="two">
+        <h5>
+            Select a Station</h5>
+        <div class="stations">
+            <br />
+        </div>
+    </li>
+    <li class="three">
+        <h5>
+            Select a Time</h5>
+        <div class="times">
+            <br />
+        </div>
+    </li>
+</ol>
+<div id="map_canvas" style="width: 857px; height: 400px; float: left; border: 1px solid #ccc;
+    margin-top: 4px">
+    &nbsp;
+</div>
+<section class="features">
+    <section class="feature">
+        <h3>
+            Yarra Trams</h3>
+        <p>
+            <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+            <script>
+                new TWTR.Widget({
+                    version: 2,
+                    type: 'profile',
+                    rpp: 4,
+                    interval: 30000,
+                    width: 250,
+                    height: 500,
+                    theme: {
+                        shell: {
+                            background: '#333333',
+                            color: '#ffffff'
+                        },
+                        tweets: {
+                            background: '#EFEEEF',
+                            color: '#333333',
+                            links: '#7AC0DA'
+                        }
+                    },
+                    features: {
+                        scrollbar: false,
+                        loop: false,
+                        live: false,
+                        behavior: 'all'
+                    }
+                }).render().setUser('yarratrams').start();
+            </script>
+            <img src="~/Images/yarra_trams.png" style="width: 250px;">
+        </p>
+    </section>
+    <section class="feature">
+        <h3>
+            Metlink</h3>
+        <p>
+            <script>
+                new TWTR.Widget({
+                    version: 2,
+                    type: 'profile',
+                    rpp: 4,
+                    interval: 30000,
+                    width: 250,
+                    height: 500,
+                    theme: {
+                        shell: {
+                            background: '#333333',
+                            color: '#ffffff'
+                        },
+                        tweets: {
+                            background: '#EFEEEF',
+                            color: '#333333',
+                            links: '#7AC0DA'
+                        }
+                    },
+                    features: {
+                        scrollbar: false,
+                        loop: false,
+                        live: false,
+                        behavior: 'all'
+                    }
+                }).render().setUser('MetlinkUpdates').start();
+            </script>
+            <img src="~/Images/metlink.png" style="width: 244px;">
+        </p>
+    </section>
+    <section class="feature">
+        <h3>
+            Metro Trains</h3>
+        <p>
+            <script>
+                new TWTR.Widget({
+                    version: 2,
+                    type: 'profile',
+                    rpp: 4,
+                    interval: 30000,
+                    width: 250,
+                    height: 300,
+                    theme: {
+                        shell: {
+                            background: '#333333',
+                            color: '#ffffff'
+                        },
+                        tweets: {
+                            background: '#EFEEEF',
+                            color: '#333333',
+                            links: '#7AC0DA'
+                        }
+                    },
+                    features: {
+                        scrollbar: false,
+                        loop: false,
+                        live: false,
+                        behavior: 'all'
+                    }
+                }).render().setUser('metrotrains').start();
+            </script>
+        </p>
+        <img src="~/Images/metro.png" style="width: 129px; padding-left: 79px;" />
+    </section>
+</section>
+<script type="text/javascript">
+    $(function () {
+        $("#map_canvas").hide();
+    });
+    $('.train-line').change(function () {
+        $.ajax({
+            url: "/Home/GetStations",
+            type: "GET",
+            datatype: "html",
+            data: { id: $(".train-line").val() },
+            success: function (data) {
+                if (data.Success === false)
+                    alert(data.Message);
+                else {
+                    $('.stations').html(data);
+                    BindSelect();
+                }
+            },
+            failure: function (data) {
+                alert("Something went wrong. Please try again");
+            },
+            error: function (data) {
+                alert("There was a connection error. Please check your connection and try again");
+            }
+        });
+    });
+
+    function BindSelect() {
+        $('.stations-list').change(function () {
+            $.ajax({
+                url: "/Home/GetLatitude",
+                type: "GET",
+                datatype: "html",
+                data: { id: $(".stations-list").val() },
+                success: function (latitude) {
+                    $.ajax({
+                        url: "/Home/GetLongitude",
+                        type: "GET",
+                        datatype: "html",
+                        data: { id: $(".stations-list").val() },
+                        success: function (longitude) {
+                            $("#map_canvas").show();
+                            initialize(new google.maps.LatLng(latitude, longitude));
+                        }
+                    });
+                }
+            });
+
+            $.ajax({
+                url: "/Home/GetTimes",
+                type: "GET",
+                datatype: "html",
+                data: { id: $(".stations-list").val() },
+                success: function (data) {
+                    if (data.Success === false)
+                        alert(data.Message);
+                    else {
+                        $('.times').html(data);
+                    }
+                },
+                failure: function (data) {
+                    alert("Something went wrong. Please try again");
+                },
+                error: function (data) {
+                    alert("There was a connection error. Please check your connection and try again");
+                }
+            });
+        });
+    }
+
+    function initialize(latlng) {
+        var myOptions = {
+            zoom: 14,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+        marker = new google.maps.Marker({
+            map: map,
+            draggable: false,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
+            position: latlng
+        });
+    }
+</script>

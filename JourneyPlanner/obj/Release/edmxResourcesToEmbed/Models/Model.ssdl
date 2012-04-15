@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TimeTableModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="TimeTableModelStoreContainer">
+    <EntitySet Name="addresses" EntityType="TimeTableModel.Store.addresses" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="lines" EntityType="TimeTableModel.Store.lines" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="stations" EntityType="TimeTableModel.Store.stations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="times" EntityType="TimeTableModel.Store.times" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_addresses_stations" Association="TimeTableModel.Store.FK_addresses_stations">
+      <End Role="stations" EntitySet="stations" />
+      <End Role="addresses" EntitySet="addresses" />
+    </AssociationSet>
+    <AssociationSet Name="FK_stations_lines" Association="TimeTableModel.Store.FK_stations_lines">
+      <End Role="lines" EntitySet="lines" />
+      <End Role="stations" EntitySet="stations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_times_stations" Association="TimeTableModel.Store.FK_times_stations">
+      <End Role="stations" EntitySet="stations" />
+      <End Role="times" EntitySet="times" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="addresses">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="station_id" Type="int" Nullable="false" />
+    <Property Name="address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="longitude" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="latitude" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="lines">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="varchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="stations">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="line_id" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="times">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="station_id" Type="int" Nullable="false" />
+    <Property Name="time" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="number" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_addresses_stations">
+    <End Role="stations" Type="TimeTableModel.Store.stations" Multiplicity="1" />
+    <End Role="addresses" Type="TimeTableModel.Store.addresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="stations">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="addresses">
+        <PropertyRef Name="station_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_stations_lines">
+    <End Role="lines" Type="TimeTableModel.Store.lines" Multiplicity="1" />
+    <End Role="stations" Type="TimeTableModel.Store.stations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="lines">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="stations">
+        <PropertyRef Name="line_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_times_stations">
+    <End Role="stations" Type="TimeTableModel.Store.stations" Multiplicity="1" />
+    <End Role="times" Type="TimeTableModel.Store.times" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="stations">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="times">
+        <PropertyRef Name="station_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
