@@ -132,6 +132,7 @@
     <Compile Include="Controllers\DataServiceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ScrapeController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Data\BusRepository.cs" />
     <Compile Include="Data\TrainRepository.cs" />
     <Compile Include="Data\TramRepository.cs" />
@@ -145,6 +146,7 @@
     </Compile>
     <Compile Include="Data\Repository.cs" />
     <Compile Include="Models\GoogleModels.cs" />
+    <Compile Include="Models\GraphModels.cs" />
     <Compile Include="Models\LocationModels.cs" />
     <Compile Include="Models\Scraper.cs" />
     <Compile Include="Models\TimeTableModels.cs" />
@@ -240,7 +242,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Test\Test.cshtml" />
+    <Content Include="Views\Test\Index.cshtml" />
     <None Include="_bin_deployableAssemblies\WebMatrix.WebData.xml" />
     <None Include="_bin_deployableAssemblies\WebMatrix.WebData.dll" />
     <None Include="_bin_deployableAssemblies\WebMatrix.Security.dll" />
@@ -305,7 +307,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>11401</DevelopmentServerPort>
+          <DevelopmentServerPort>2972</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

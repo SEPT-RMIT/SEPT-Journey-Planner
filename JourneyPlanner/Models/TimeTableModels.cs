@@ -8,6 +8,7 @@ using System.Web.Script.Serialization;
 using System.Web.Helpers;
 using JourneyPlanner.Data;
 using JourneyPlanner.Models.GoogleModels;
+using JourneyPlanner.Models.GraphModels;
 
 namespace JourneyPlanner.Models.TimeTableModels
 {
@@ -36,6 +37,7 @@ namespace JourneyPlanner.Models.TimeTableModels
 
     public interface ITimeTableService
     {
+        List<string> CreateGraph(); // creates a Graph, populates it with 2 lines, and performs a BFS and returns the result
         IEnumerable<line> GetTrainLines();
         IEnumerable<station> GetStationsByLineId(int Id);
         IEnumerable<time> GetTimesByStationId(int Id);
@@ -55,6 +57,18 @@ namespace JourneyPlanner.Models.TimeTableModels
         public TimeTableService(ITrainRepository TrainRepository)
         {
             this._trainRepository = TrainRepository;
+        }
+
+        public List<string> CreateGraph()
+        {
+            Graph graph = new Graph();
+            List<station> HurstbridgeLine = _trainRepository.GetStationsByLineId(2).ToList();
+            List<station> EppingLine = _trainRepository.GetStationsByLineId(1).ToList();
+            graph.AddLineToGraph(HurstbridgeLine, "HB");
+            graph.AddLineToGraph(EppingLine, "EP");
+            station station1 = HurstbridgeLine[0];
+            station station2 = EppingLine[3];
+            return graph.BFS(station1, station2);
         }
 
         /// <summary>

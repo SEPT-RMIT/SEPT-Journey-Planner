@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TimeTableModelStoreContainer" CdmEntityContainer="TimeTableEntities">
+    <EntitySetMapping Name="addresses">
+      <EntityTypeMapping TypeName="TimeTableModel.address">
+        <MappingFragment StoreEntitySet="addresses">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="station_id" ColumnName="station_id" />
+          <ScalarProperty Name="address1" ColumnName="address" />
+          <ScalarProperty Name="longitude" ColumnName="longitude" />
+          <ScalarProperty Name="latitude" ColumnName="latitude" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="lines">
+      <EntityTypeMapping TypeName="TimeTableModel.line">
+        <MappingFragment StoreEntitySet="lines">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="stations">
+      <EntityTypeMapping TypeName="TimeTableModel.station">
+        <MappingFragment StoreEntitySet="stations">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="line_id" ColumnName="line_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="times">
+      <EntityTypeMapping TypeName="TimeTableModel.time">
+        <MappingFragment StoreEntitySet="times">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="station_id" ColumnName="station_id" />
+          <ScalarProperty Name="time1" ColumnName="time" />
+          <ScalarProperty Name="number" ColumnName="number" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

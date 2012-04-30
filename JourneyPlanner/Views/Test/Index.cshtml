@@ -1,0 +1,154 @@
+﻿<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAfRUZunjGFfD3t7VIik4yydnE066MO_6k&sensor=false">
+</script>
+@{
+    ViewBag.Title = "Test";
+}
+<h2>
+    Test</h2>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"
+    type="text/javascript"></script>
+<style type="text/css">
+    body
+    {
+        font-family: sans-serif;
+        font-size: 14px;
+    }
+    #map_canvas
+    {
+        height: 400px;
+        width: 600px;
+        margin-top: 0.6em;
+    }
+    #bfs_result
+    {
+        height: 400px;
+        width: 600px;
+        margin-top: 0.6em;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        var origin;
+        var destination;
+
+        function initialize() {
+            var options = {
+                componentRestrictions: { country: 'au' }
+            };
+
+            var originInput = document.getElementById('originTextField');
+            var destinationInput = document.getElementById('destinationTextField');
+
+            var autocompleteOrigin = new google.maps.places.Autocomplete(originInput, options);
+            var autocompleteDestination = new google.maps.places.Autocomplete(destinationInput, options);
+
+            google.maps.event.addListener(autocompleteOrigin, 'place_changed', function () {
+                var place = autocompleteOrigin.getPlace();
+                origin = autocompleteOrigin.getPlace();
+                if (destination === undefined || origin === undefined)
+                    return;
+                else
+                    drawMap(origin, destination);
+            });
+
+            google.maps.event.addListener(autocompleteDestination, 'place_changed', function () {
+                var place = autocompleteDestination.getPlace();
+                destination = autocompleteDestination.getPlace();
+
+                if (destination === undefined || origin === undefined)
+                    return;
+                else
+                    drawMap(origin, destination);
+            });
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+    });
+
+    String.prototype.replaceAt = function (index, char) {
+        return this.substr(0, index) + char + this.substr(index + char.length);
+    }
+
+    function drawMap(origin, destination) {
+        var temp = origin.geometry.location.toString().split(',');
+        var originSplit =
+                { lat: temp[0].replaceAt(0, " "), long: temp[1].replaceAt(temp[1].length - 1, " ") }
+        temp = destination.geometry.location.toString().split(',');
+        var destinationSplit =
+                { lat: temp[0].replaceAt(0, " "), long: temp[1].replaceAt(temp[1].length - 1, " ") }
+
+
+        var directionDisplay;
+        var directionsService = new google.maps.DirectionsService();
+        var map;
+        var o = new google.maps.LatLng(originSplit.lat, originSplit.long);
+        alert(o);
+        var d = new google.maps.LatLng(destinationSplit.lat, destinationSplit.long);
+        alert(d);
+
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        var myOptions = {
+            zoom: 14,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            center: o
+        }
+        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        directionsDisplay.setMap(map);
+
+        var request = {
+            origin: o,
+            destination: d,
+            // Note that Javascript allows us to access the constant
+            // using square brackets and a string value as its
+            // "property."
+            travelMode: google.maps.DirectionsTravelMode["DRIVING"]
+        };
+
+        $.ajax({
+            url: '@Url.Action("GetNearbyStations", "DataService")',
+            dataType: 'json',
+            data: {
+                latitude: originSplit.lat,
+                longitude: originSplit.long
+            },
+            success: function (data) {
+                ko.applyBindings(new QuoteViewModel(data));
+            }
+        });
+
+        directionsService.route(request, function (response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+                alert(response.routes[0].legs[0].steps[0].distance.value);
+            }
+        });
+    }
+</script>
+<div>
+    @{var ph = "@station name";}
+    <div>
+        <input type="text" placeholder="@ph" />
+    </div>
+    <input id="originTextField" type="text" size="50" />
+    <br />
+    <div id="origin-stations">
+        <ul>
+        </ul>
+    </div>
+    <input id="destinationTextField" type="text" size="50" />
+</div>
+<div id="map_canvas" style="width: 857px; height: 400px; float: left; border: 1px solid #ccc;
+    margin-top: 4px">
+    &nbsp;
+</div>
+<!--  Print the path from start station to destination as determined by BFS -->
+<div id="bfs_result">
+    @foreach (var item in @ViewBag.BFS_Result)
+    { 
+        @item<br />
+    }
+
+
+</div>
+<script type="text/javascript">
+
+</script>

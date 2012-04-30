@@ -9,6 +9,7 @@ using JourneyPlanner.Models.GoogleModels;
 using JourneyPlanner.Data;
 using JourneyPlanner.Models.LocationModels;
 using JourneyPlanner.Models.TimeTableModels;
+using JourneyPlanner.Models.GraphModels;
 
 namespace JourneyPlanner.Models.Scraper
 {
